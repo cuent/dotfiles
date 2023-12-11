@@ -1,0 +1,42 @@
+{{ if and (eq .chezmoi.os "darwin" "linux") (not .headless) -}}
+
+{{ $extensions := list
+    "ms-python.black-formatter"
+    "ms-python.python"
+    "ms-python.vscode-pylance"
+    "ms-toolsai.jupyter"
+    "ms-toolsai.jupyter-keymap"
+    "ms-toolsai.jupyter-renderers"
+    "ms-toolsai.vscode-jupyter-cell-tags"
+    "ms-toolsai.vscode-jupyter-slideshow"
+    "ms-vscode-remote.remote-containers"
+    "ms-vscode-remote.remote-ssh"
+    "ms-vscode-remote.remote-ssh-edit"
+    "ms-vscode-remote.vscode-remote-extensionpack"
+    "ms-vscode.remote-explorer"
+    "ms-vscode.remote-server"
+    "ms-vscode.cpptools"
+    "redhat.vscode-yaml"
+    "tamasfe.even-better-toml"
+    "stkb.rewrap"
+    "streetsidesoftware.code-spell-checker"
+    "Tyriar.sort-lines"
+    "yzhang.markdown-all-in-one" -}}
+
+{{ if .personal -}}
+{{   $extensions = concat $extensions (list
+    "GitHub.copilot"
+    "GitHub.copilot-chat"
+    "github.vscode-github-actions"
+    "James-Yu.latex-workshop") -}}
+{{ end -}}
+
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ range $extensions -}}
+code --force --install-extension {{ . }}
+{{ end -}}
+
+{{ end -}}

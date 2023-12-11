@@ -1,0 +1,6 @@
+{{- if and .headless .gpu }}
+# chsh on login and avoid using sudo
+if test -t 1; then
+exec zsh
+fi
+{{- end -}}

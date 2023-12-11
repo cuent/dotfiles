@@ -1,0 +1,29 @@
+# git
+alias gnp="git --no-pager"
+
+{{- if lookPath "bat" }}
+alias cat=bat
+{{- else if lookPath "batcat" }}
+alias cat=batcat
+{{- end }}
+{{- if lookPath "fdfind" }}
+alias fd=fdfind
+{{- end }}
+{{- if lookPath "eza" }}
+alias ls=eza
+{{- end }}
+
+# Unix
+alias ll="ls -al"
+alias ln="ln -v"
+alias mkdir="mkdir -p"
+alias e="$EDITOR"
+alias v="$VISUAL"
+
+# Bundler
+alias b="bundle"
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
+{{/* vim: set filetype=bash: */}}

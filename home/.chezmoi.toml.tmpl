@@ -1,0 +1,68 @@
+{{/* boolean feature tags */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+
+{{- $gpu_server := false -}}{{/* true if this machine is a gpu server */}}
+
+{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+{{- $work := false -}}{{/* true if this machine is used for work purposes */}}
+{{- "" -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* work around unreliable hostname on darwin */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
+{{-   if eq $computerName "MacBook Pro de Xavier" -}}
+{{-     $hostname = "cuent-mbp" -}}
+{{-   else if eq $computerName "work" -}}
+{{-     $hostname = "cuent-work" -}}
+{{-   else -}}
+{{-     $hostname = $computerName -}}
+{{-   end -}}
+{{- end -}}
+
+{{- if eq .chezmoi.os "windows" -}}
+{{-   $ephemeral = true -}}
+{{- end -}}
+
+{{- if not $ephemeral -}}
+{{-   if and (eq .chezmoi.hostname "corgi" "bluejay") (eq .chezmoi.username "xxs22") -}}
+{{/*    fixed user for GPUs */}}
+{{-     $personal = true -}}
+{{-     $headless = true -}}
+{{-     $gpu_server = true -}}
+{{-   else if eq $hostname "cuent-mbp" -}}
+{{-     $personal = true -}}
+{{-   else if eq $hostname "cuent-work" -}}
+{{-     $personal = true -}}
+{{-     $work = true -}}
+{{-   else -}}
+{{-     $ephemeral = true -}}
+{{-     $headless = true -}}
+{{-   end -}}
+{{- end -}}
+
+{{- $email := "c.uent@hotmail.com" -}}
+{{- $workemail := "" -}}
+{{- if $work -}}
+{{-     $workemail = promptStringOnce . "workemail" "Work email address" -}}
+{{- end -}}
+
+[data]
+    email = {{ $email | quote }}
+    workemail = {{ $workemail | quote }}
+    
+    ephemeral = {{ $ephemeral }}
+    headless = {{ $headless }}
+    
+    work = {{ $work }}
+    personal = {{ $personal }}
+    
+    gpu = {{ $gpu_server }}
+
+    osid = {{ $osID | quote }}

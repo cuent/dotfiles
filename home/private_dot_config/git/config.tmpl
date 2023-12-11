@@ -1,0 +1,27 @@
+[user]
+	name = Xavier Sumba
+	email = {{ .email }}
+
+[diff]
+	algorithm = histogram
+	renamelimit = 8192
+	colorMoved = zebra
+	renames = copies
+
+[color]
+  	ui = auto
+
+[push]
+  	default = current
+
+[rebase]
+  autosquash = true
+
+[alias]
+	aa = add --all
+	ap = add --patch
+	branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+	ci = commit -v
+	co = checkout
+	pf = push --force-with-lease
+	st = status

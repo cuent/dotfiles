@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ $brews := list
+     "tmux"
+     "virtualenvwrapper" -}}
+{{ $casks := list
+     "visual-studio-code"
+     "spotify" -}}
+
+
+{{ if and .personal (not .work) -}}
+{{   $brews = concat $brews (list
+       "lastpass-cli") -}}
+{{   $casks = concat $casks (list
+       "steam"
+       "mendeley"
+       "notion"
+       "microsoft-teams"
+       "mactex-no-gui") -}}
+{{ end -}}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+brew "{{ . }}"
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+cask "{{ . }}"
+{{ end -}}
+EOF

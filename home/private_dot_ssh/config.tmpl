@@ -1,0 +1,27 @@
+{{- if eq .chezmoi.os "darwin" }}
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
+{{- end }}
+
+
+{{- if .personal }}
+Host corgi
+  User xxs22
+  Hostname corgi.doc.ic.ac.uk
+Host bluejay
+  User xxs22
+  Hostname bluejay.doc.ic.ac.uk
+{{- end }}
+
+{{- if .work }}
+Host cuent.gitlab.com
+  Hostname gitlab.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_rsa
+
+Host xavier.sumba.gitlab.com
+  Hostname gitlab.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_ed25519
+{{- end }}
