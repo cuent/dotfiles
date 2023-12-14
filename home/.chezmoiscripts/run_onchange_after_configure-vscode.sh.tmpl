@@ -23,12 +23,17 @@
     "Tyriar.sort-lines"
     "yzhang.markdown-all-in-one" -}}
 
-{{ if .personal -}}
+{{ if and .personal (not .work) -}}
 {{   $extensions = concat $extensions (list
     "GitHub.copilot"
     "GitHub.copilot-chat"
     "github.vscode-github-actions"
     "James-Yu.latex-workshop") -}}
+{{ end -}}
+
+{{ if .work -}}
+{{ $extensions = concat $extensions (list
+    "ms-azuretools.vscode-docker") -}}
 {{ end -}}
 
 #!/bin/bash
