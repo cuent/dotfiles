@@ -94,6 +94,9 @@ export HOMEBREW_GITHUB_API_TOKEN={{ (index (lastpassRaw "homebrew_github_api_tok
 
 {{- if .work }}
 export AD_ACCOUNTNAME=xavier.sumba
+{{-   if lookPath "hs-opskit-rc-zsh" }}
+source /usr/local/bin/hs-opskit-rc-zsh
+{{-   end }}
 {{- end }}
 
 #{{- if lookPath "direnv" }}

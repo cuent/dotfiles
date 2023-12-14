@@ -33,7 +33,8 @@
 
 {{ if .work -}}
 {{ $extensions = concat $extensions (list
-    "ms-azuretools.vscode-docker") -}}
+    "ms-azuretools.vscode-docker"
+    "ms-vscode.makefile-tools") -}}
 {{ end -}}
 
 #!/bin/bash
