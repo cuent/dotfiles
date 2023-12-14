@@ -37,6 +37,9 @@
 [commit]
   template = ~/.config/git/message
 
+[pretty]
+  colored = format:%Cred%h%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset
+
 [alias]
 	aa = add --all
 	ap = add --patch
@@ -45,5 +48,6 @@
 	co = checkout
 	pf = push --force-with-lease
 	st = status
+	l = log --pretty=colored
 
 {{/* vim: set filetype=gitconfig: */}}

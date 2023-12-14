@@ -73,6 +73,20 @@ export EDITOR=$HOME/.local/bin/vim
 export EDITOR=vim
 {{ end -}}
 
+{{ if or .work .personal -}}
+# Load plugin manager 
+if [ -e {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim ]; then
+  vim -E -s +PlugUpgrade +qa
+else
+  curl -fLo {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+vim -u {{ .chezmoi.homeDir }}/.vimrc.bundles +PlugUpdate +PlugClean! +qa
+
+reset -Q
+{{ end -}}
+
 export GOPATH=$HOME
 export GO111MODULE=on
 
