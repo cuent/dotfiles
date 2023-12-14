@@ -85,6 +85,7 @@ fi
 vim -u {{ .chezmoi.homeDir }}/.vimrc.bundles +PlugUpdate +PlugClean! +qa
 
 reset -Q
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 {{ end -}}
 
 export GOPATH=$HOME
@@ -97,7 +98,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 # export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 {{- if .personal }}
 {{-   if eq .chezmoi.os "darwin" }}
