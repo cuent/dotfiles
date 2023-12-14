@@ -1,0 +1,21 @@
+{{ if false -}}
+# TODO: add a hook instead
+#!/bin/bash
+set -eufo pipefail
+
+# Load vim plugin manager 
+if [ -e {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim ]; then
+  echo "ssdsd" 
+  vim -E -s +PlugUpgrade +qa
+  echo "asdas"
+else
+  curl -fLo {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+vim -u {{ .chezmoi.homeDir }}/.vimrc.bundles +PlugUpdate +PlugClean! +qa
+
+# reset -Q
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+{{ end -}}
