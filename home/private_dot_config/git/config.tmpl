@@ -14,8 +14,23 @@
 [push]
   	default = current
 
+[merge]
+  ff = only
+
+[fetch]
+  prune = true
+  
 [rebase]
   autosquash = true
+
+[core]
+  autocrlf = input
+
+[rebase]
+  autosquash = true
+
+[commit]
+  template = ~/.config/git/message
 
 [alias]
 	aa = add --all
@@ -25,3 +40,5 @@
 	co = checkout
 	pf = push --force-with-lease
 	st = status
+
+{{/* vim: set filetype=gitconfig: */}}
