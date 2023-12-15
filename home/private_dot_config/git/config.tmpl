@@ -12,8 +12,8 @@
   	ui = auto
 
 {{ if .work }}
-[include]
-        path = {{ .chezmoi.homeDir }}/code/work/.gitconfig
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/code/work"]
+    path = {{ .chezmoi.homeDir }}/code/work/.gitconfig
 {{ end }}
 
 [push]
