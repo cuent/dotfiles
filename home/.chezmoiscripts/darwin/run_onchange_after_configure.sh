@@ -60,6 +60,10 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 # Display the full POSIX path as the Finder window title.
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
+# Menu bar Settings:
+# Hide Spotlight icon.
+defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
+
 # System Preferences Settings:
 # Disable the feature where windows are kept when quitting and re-opening apps.
 defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
