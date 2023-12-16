@@ -103,7 +103,7 @@ source /usr/local/bin/hs-opskit-rc-zsh
 #{{ output "direnv" "hook" "zsh" | trim }}
 #{{- end }}
 
-{{- if lookPath "virtualenv" }}
+{{- if lookPath "virtualenvwrapper.sh" }}
 # Source virtualenvwrapper
 source virtualenvwrapper.sh
 {{- end }}
