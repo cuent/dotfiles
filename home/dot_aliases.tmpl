@@ -13,6 +13,10 @@ alias fd=fdfind
 alias ls=eza
 {{- end }}
 
+{{- if and (stat "/data2/users/xxs22") .gpu }}
+alias wd=/data2/users/xxs22
+{{- end }}
+
 # Unix
 alias ll="ls -al"
 alias ln="ln -v"
