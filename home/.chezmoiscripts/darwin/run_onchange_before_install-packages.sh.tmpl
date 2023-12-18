@@ -3,23 +3,35 @@
 set -eufo pipefail
 
 {{ $brews := list
+     "bat"
+     "curl"
+     "eza"
+     "fd"
+     "fzf"
+     "gdu"
+     "jq"
+     "ripgrep"
      "tmux"
      "virtualenvwrapper"
-     "curl" -}}
+     "wget" -}}
+{{/*      "karabiner-elements" */}}
 {{ $casks := list
-     "visual-studio-code"
-     "spotify" -}}
+     "google-chrome"
+     "iterm2"
+     "spotify"
+     "spotify"
+     "visual-studio-code" -}}
 
 
 {{ if and .personal (not .work) -}}
 {{   $brews = concat $brews (list
        "lastpass-cli") -}}
+{{/* "mactex-no-gui" */}}
 {{   $casks = concat $casks (list
-       "steam"
        "mendeley"
-       "notion"
        "microsoft-teams"
-       "mactex-no-gui") -}}
+       "notion"
+       "steam") -}}
 {{ end -}}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
