@@ -9,36 +9,36 @@
 	renames = copies
 
 [color]
-  	ui = auto
+	ui = auto
 
 {{ if .work }}
-[includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba"]
-    path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/"]
+	path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
 {{ end }}
 
 [push]
-  	default = current
+	default = current
 
 [merge]
-  ff = only
+	ff = only
 
 [fetch]
-  prune = true
+	prune = true
   
 [rebase]
-  autosquash = true
+	autosquash = true
 
 [core]
-  autocrlf = input
+	autocrlf = input
 
 [rebase]
-  autosquash = true
+	autosquash = true
 
 [commit]
-  template = ~/.config/git/message
+	template = ~/.config/git/message
 
 [pretty]
-  colored = format:%Cred%h%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset
+	colored = format:%Cred%h%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset
 
 [alias]
 	aa = add --all
