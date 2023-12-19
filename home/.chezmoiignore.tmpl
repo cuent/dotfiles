@@ -29,9 +29,6 @@
 .pypirc
 {{ end }}
 
-{{ if not .personal }}
-~/Documents/code
-{{ end }}
-{{ if not .work }}
-~/Documents/code/github.hootops.com/xavier.sumba
+{{ if not (or .personal .work) }}
+*/code/*
 {{ end }}
