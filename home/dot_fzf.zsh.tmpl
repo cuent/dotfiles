@@ -1,0 +1,9 @@
+{{- if .gpu -}}
+# Setup fzf
+# ---------
+if [[ ! "$PATH" == */data/xxs22/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/data/xxs22/.fzf/bin"
+fi
+
+source <(fzf --zsh)
+{{- end -}}
