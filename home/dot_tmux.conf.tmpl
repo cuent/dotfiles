@@ -1,3 +1,4 @@
+{{- if or .personal .gpu -}}
 # improve colors
 set -g default-terminal 'screen-256color'
 
@@ -36,3 +37,4 @@ bind-key C-s send-prefix -2
 
 # don't suspend-client
 unbind-key C-z
+{{- end }}

@@ -1,7 +1,7 @@
 [user]
 	name = Xavier Sumba
 	email = {{ .email }}
-{{- if and .personal (not .work) }}
+{{- if and .personal (not (or .work .gpu)) }}
 	signingkey = {{ output "op" "item" "get" "ssh_mac" "--fields" "public key" }}
 {{- else if .work }}
 	signingkey = ~/.ssh/id_rsa
@@ -40,7 +40,7 @@
 
 [commit]
 	template = ~/.config/git/message
-{{- if or .work .personal }}
+{{- if or .work (and .personal (not .gpu)) }}
 	gpgsign = true
 {{- end }}
 
@@ -57,12 +57,12 @@
 	st = status
 	l = log --pretty=colored
 
-{{- if or .work .personal }}
+{{- if or .work (and .personal (not .gpu)) }}
 [gpg]
 	format = ssh
 
 [gpg "ssh"]
-{{- if and .personal  (not .work) }}
+{{- if and .personal  (not (or .work .gpu)) }}
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 {{- else if .work }}
 	program = ssh-keygen

@@ -2,7 +2,7 @@
 Host *
   UseKeychain yes
   AddKeysToAgent yes
-{{- if and .personal (not .work) }}
+{{- if and .personal (not (or .work .gpu)) }}
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{- end }}
 {{- end }}
