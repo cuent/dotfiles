@@ -1,7 +1,11 @@
 [user]
 	name = Xavier Sumba
 	email = {{ .email }}
-
+{{- if .personal }}
+	signingkey = {{ output "op" "item" "get" "ssh_mac" "--fields" "public key" }}
+{{- else if .work }}
+	signingkey = ~/.ssh/id_rsa
+{{- end }}
 [diff]
 	algorithm = histogram
 	renamelimit = 8192
@@ -11,10 +15,10 @@
 [color]
 	ui = auto
 
-{{ if .work }}
+{{- if .work }}
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/"]
 	path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
-{{ end }}
+{{- end }}
 
 [push]
 	default = current
@@ -36,6 +40,9 @@
 
 [commit]
 	template = ~/.config/git/message
+{{- if or .work .personal }}
+	gpgsign = true
+{{- end }}
 
 [pretty]
 	colored = format:%Cred%h%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset
@@ -49,5 +56,17 @@
 	pf = push --force-with-lease
 	st = status
 	l = log --pretty=colored
+
+{{- if or .work .personal }}
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+{{- if .personal }}
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- else if .work }}
+	program = ssh-keygen
+{{- end }}
+{{- end }}
 
 {{/* vim: set filetype=gitconfig: */}}

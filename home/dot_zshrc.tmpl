@@ -85,12 +85,8 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
 
-{{- if .personal }}
-{{-   if eq .chezmoi.os "darwin" }}
-{{-     if lookPath "lpass" }}
-export HOMEBREW_GITHUB_API_TOKEN={{ (index (lastpassRaw "homebrew_github_api_token") 0).note | trim }}
-{{-     end }}
-{{-   end }}
+{{- if and .personal (eq .chezmoi.os "darwin") (lookPath "op") }}
+export HOMEBREW_GITHUB_API_TOKEN={{ (output "op" "item" "get" "homebrew_github_api_token" "--fields" "notesPlain") }}
 {{- end }}
 
 {{- if .work }}
