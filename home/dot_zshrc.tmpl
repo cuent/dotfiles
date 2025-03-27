@@ -59,36 +59,44 @@ done
 # Aliases
 [[ -f $HOME/.aliases ]] && source $HOME/.aliases
 
-# User configuration
+## User configuration
 
+# Prompt customization
 PROMPT="%{$fg[white]%}%n@%{$fg[green]%}%m%{$reset_color%} ${PROMPT}"
 
+# Shell options
 setopt autocd
 setopt histignorespace
 setopt rm_star_silent
 
+# Default editor
 {{ if eq .osid "linux-ubuntu" -}}
 export EDITOR=$HOME/.local/bin/vim
 {{ else -}}
 export EDITOR=vim
 {{ end -}}
 
+# Go configuration
 export GOPATH=$HOME
 export GO111MODULE=on
 
+# macOS Homebrew setup
 {{- if eq .chezmoi.os "darwin" }}
 [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 export HOMEBREW_NO_AUTO_UPDATE=1
 {{- end }}
 
+# Locale and environment
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
 
+# Personal API token for Homebrew (macOS + personal use only)
 {{- if and .personal (eq .chezmoi.os "darwin") (lookPath "op") }}
 export HOMEBREW_GITHUB_API_TOKEN={{ (output "op" "item" "get" "homebrew_github_api_token" "--fields" "notesPlain") }}
 {{- end }}
 
+# Work environment variables
 {{- if .work }}
 export AD_ACCOUNTNAME=xavier.sumba
 {{-   if lookPath "hs-opskit-rc-zsh" }}
@@ -96,23 +104,27 @@ source /usr/local/bin/hs-opskit-rc-zsh
 {{-   end }}
 {{- end }}
 
-#{{- if lookPath "direnv" }}
-#{{ output "direnv" "hook" "zsh" | trim }}
-#{{- end }}
+# Enable direnv if available
+{{- if lookPath "direnv" }}
+{{ output "direnv" "hook" "zsh" | trim }}
+{{- end }}
 
+# Load Python virtualenvwrapper if available
 {{- if lookPath "virtualenvwrapper.sh" }}
-# Source virtualenvwrapper
 source virtualenvwrapper.sh
 {{- end }}
 
+# Add local bin for headless GPU environments
 {{- if and .headless .gpu }}
 export PATH="$HOME/bin:$PATH"
 {{- end }}
 
+# Load fzf integration if available
 {{- if .gpu }}
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 {{- end }}
 
+# Conda initialization (only in headless+gpu context)
 {{- if and .headless .gpu }}
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -128,6 +140,12 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+{{- end }}
+
+# Setup Perl path for latexindent (personal use only)
+{{- if and .personal (not .work) }}
+# Add local Perl modules to path for latexindent
+export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"
 {{- end }}
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

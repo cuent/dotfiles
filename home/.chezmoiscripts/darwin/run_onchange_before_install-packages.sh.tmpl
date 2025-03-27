@@ -23,8 +23,10 @@ set -eufo pipefail
 
 
 {{ if and .personal (not .work) -}}
-{{/*   $brews = concat $brews (list ) -*/}}
-{{/* "mactex-no-gui" */}}
+{{   $brews = concat $brews (list 
+     "direnv"
+) -}}
+{{/* "mactex-no-gui" install manually as it is a big package and there are network issues*/}}
 {{   $casks = concat $casks (list
        "adobe-acrobat-reader"
        "mendeley"
