@@ -1,8 +1,11 @@
 {{ if and (eq .chezmoi.os "darwin" "linux") (not .headless) -}}
 
 {{ $extensions := list
+    "github.copilot"
+    "github.copilot-chat"
     "ms-python.black-formatter"
     "ms-python.python"
+    "ms-python.debugpy"
     "ms-python.vscode-pylance"
     "ms-toolsai.jupyter"
     "ms-toolsai.jupyter-keymap"
@@ -17,6 +20,7 @@
     "ms-vscode.remote-server"
     "ms-vscode.cpptools"
     "redhat.vscode-yaml"
+    "mechatroner.rainbow-csv"
     "tamasfe.even-better-toml"
     "stkb.rewrap"
     "streetsidesoftware.code-spell-checker"
@@ -25,15 +29,17 @@
 
 {{ if and .personal (not .work) -}}
 {{   $extensions = concat $extensions (list
-    "GitHub.copilot"
-    "GitHub.copilot-chat"
-    "github.vscode-github-actions"
+    "openai.chatgpt"
+    "ms-toolsai.tensorboard"
     "James-Yu.latex-workshop") -}}
 {{ end -}}
 
 {{ if .work -}}
 {{ $extensions = concat $extensions (list
+    "eamodio.gitlens"
     "ms-azuretools.vscode-docker"
+    "snyk-security.snyk-vulnerability-scanner"
+    "golang.go"
     "ms-vscode.makefile-tools") -}}
 {{ end -}}
 
