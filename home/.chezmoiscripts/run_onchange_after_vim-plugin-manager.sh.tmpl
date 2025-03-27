@@ -3,16 +3,32 @@
 #!/bin/bash
 set -eufo pipefail
 
-# Load vim plugin manager
-if [ -e {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim ]; then
-  vim -E -s +PlugUpgrade +qa
+log() {
+  echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
+
+log "Starting vim-plug setup..."
+
+PLUG_PATH="{{ .chezmoi.homeDir }}/.vim/autoload/plug.vim"
+VIMRC="{{ .chezmoi.homeDir }}/.vimrc.bundles"
+
+if [ -e "$PLUG_PATH" ]; then
+log "Upgrading vim plugins using +PlugUpgrade..."
+  if ! vim -E -s +PlugUpgrade +qa; then
+    log "Error: PlugUpgrade failed."
+    exit 0
+  fi
 else
-  curl -fLo {{ .chezmoi.homeDir }}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  log "plug.vim not found, installing..."
+  curl -fLo "$PLUG_PATH" --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 fi
 
-vim -u {{ .chezmoi.homeDir }}/.vimrc.bundles +PlugUpdate +PlugClean! +qa
+log "Running PlugUpdate and PlugClean..."
+vim -u "$VIMRC" +PlugUpdate +PlugClean! +qa
 
-# reset -Q
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+log "vim plugin manager setup complete."
 
+reset -Q
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 {{ end -}}
+
