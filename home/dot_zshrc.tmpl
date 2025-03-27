@@ -109,9 +109,9 @@ source virtualenvwrapper.sh
 export PATH="$HOME/bin:$PATH"
 {{- end }}
 
-{{- if .gpu -}}
+{{- if .gpu }}
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-{{- end -}}
+{{- end }}
 
 {{- if and .headless .gpu }}
 # >>> conda initialize >>>
