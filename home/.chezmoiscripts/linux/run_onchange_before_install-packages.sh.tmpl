@@ -6,7 +6,7 @@ set -eufo pipefail
 if ! command -v fzf &> /dev/null; then
   echo "Installing fzf for GPU machine..."
   git clone --depth 1 https://github.com/junegunn/fzf.git /data/xxs22/.fzf
-  ~/.fzf/install --all
+  /data/xxs22/.fzf/install --all
 else
   echo "fzf already installed."
 fi
