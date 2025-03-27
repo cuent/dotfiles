@@ -106,16 +106,21 @@ source virtualenvwrapper.sh
 {{- end }}
 
 {{- if and .headless .gpu }}
+export PATH="$HOME/bin:$PATH"
+{{- end }}
+
+
+{{- if and .headless .gpu }}
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/data2/packages/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/data/packages/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/data2/packages/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/data2/packages/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/data/packages/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/data/packages/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/data2/packages/anaconda3/bin:$PATH"
+        export PATH="/data/packages/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
