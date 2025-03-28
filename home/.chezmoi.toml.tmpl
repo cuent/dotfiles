@@ -53,14 +53,10 @@
 {{-     $workemail = promptStringOnce . "workemail" "Work email address" -}}
 {{- end -}}
 
-{{- $gpuHome := "" }}
 {{- $gpuHosts := dict
     "corgi" (printf "/data/%s" .chezmoi.username)
     "bluejay" (printf "/data2/users/%s" .chezmoi.username)
 }}
-{{- if and .gpu (hasKey $gpuHosts .chezmoi.hostname) }}
-{{-     $gpuHome = index $gpuHosts .chezmoi.hostname }}
-{{- end }}
 
 [data]
     email = {{ $email | quote }}
@@ -76,4 +72,10 @@
 
     osid = {{ $osID | quote }}
 
-    extra = { gpuHome = {{ $gpuHome | quote }} }
+{{- if .gpu }}
+    extra = { gpuHome = {
+        {{- range $host, $path := $gpuHosts }}
+        {{ $host }} = { home = {{ $path | quote }} },
+        {{- end }}
+} }
+{{- end }}
