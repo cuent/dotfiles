@@ -3,13 +3,35 @@
 
 set -eufo pipefail
 
+FZF_DIR={{ .extra.gpuHome }}/.fzf
+FZF_ZSH={{ .extra.gpuHome }}/.fzf.zsh
 if ! command -v fzf &> /dev/null; then
+
+  if [ ! -d "$FZF_DIR" ]; then
+    echo "Cloning fzf into $FZF_DIR..."
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$FZF_DIR"
+  else
+    echo "fzf directory already exists at $FZF_DIR, skipping clone."
+  fi
+
   echo "Installing fzf for GPU machine..."
-  git clone --depth 1 https://github.com/junegunn/fzf.git {{ .extra.gpuHome }}/.fzf
-  {{ .extra.gpuHome }}/.fzf/install --all
+  "$FZF_DIR"/install --key-bindings --completion --no-update-rc --no-zsh --no-bash
+
 else
   echo "fzf already installed."
 fi
+
+echo "Writing fzf.zsh to $FZF_ZSH..."
+cat <<'EOF' > "$FZF_ZSH"
+# Auto-generated fzf config
+if [[ ":$PATH:" != *":{{ .extra.gpuHome }}/.fzf/bin:"* ]]; then
+  export PATH="{{ .extra.gpuHome }}/.fzf/bin:$PATH"
+fi
+
+if command -v fzf &>/dev/null; then
+  source <("{{ .extra.gpuHome }}/.fzf/bin/fzf" --zsh)
+fi
+EOF
 {{- end -}}
 
 {{- if .ephemeral -}}

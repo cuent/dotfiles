@@ -1,9 +1,0 @@
-{{- if .gpu -}}
-# Setup fzf
-# ---------
-if [[ ! "$PATH" == "{{ .extra.gpuHome }}/.fzf/bin*" ]]; then
-  PATH="${PATH:+${PATH}:}{{ .extra.gpuHome }}/.fzf/bin"
-fi
-
-source <(fzf --zsh)
-{{- end -}}
