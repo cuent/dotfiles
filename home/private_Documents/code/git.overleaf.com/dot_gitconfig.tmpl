@@ -1,0 +1,4 @@
+{{- if and .personal (not .work) }}
+[credential]
+    helper = "!sh {{ .chezmoi.homeDir }}/Documents/code/git.overleaf.com/.overleaf-cred.sh"
+{{- end }}

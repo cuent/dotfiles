@@ -20,6 +20,11 @@
 	path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
 {{- end }}
 
+{{- if and .personal (not .work) }}
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/git.overleaf.com/"]
+    path = {{ .chezmoi.homeDir }}/Documents/code/git.overleaf.com/.gitconfig
+{{- end }}
+
 [push]
 	default = current
 
