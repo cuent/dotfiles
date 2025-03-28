@@ -13,7 +13,7 @@ alias fd=fdfind
 alias ls=eza
 {{- end }}
 
-{{- if and .gpu (index . "extra") (stat (printf "%s/.fzf" .extra.gpuHome)) }}
+{{- if and .gpu (stat .extra.gpuHome) }}
 alias wd={{ .extra.gpuHome }}
 {{- end }}
 
