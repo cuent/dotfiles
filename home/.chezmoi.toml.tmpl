@@ -53,6 +53,13 @@
 {{-     $workemail = promptStringOnce . "workemail" "Work email address" -}}
 {{- end -}}
 
+{{- $gpuHome := "" }}
+{{- if eq .chezmoi.hostname "corgi" }}
+{{- $gpuHome = "/data/xxs22" }}
+{{- else if eq .chezmoi.hostname "bluejay" }}
+{{- $gpuHome = "/data2/users/xxs22" }}
+{{- end }}
+
 [data]
     email = {{ $email | quote }}
     workemail = {{ $workemail | quote }}
@@ -66,3 +73,6 @@
     gpu = {{ $gpu_server }}
 
     osid = {{ $osID | quote }}
+
+[extra]
+    gpuHome = {{ $gpuHome | quote }}
