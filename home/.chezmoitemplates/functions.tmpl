@@ -1,0 +1,8 @@
+{{- define "getGpuHome" -}}
+  {{- $host := . -}}
+  {{- if and (hasKey $.gpuExtra $host) (hasKey (index $.gpuExtra $host) "home") -}}
+    {{- index (index $.gpuExtra $host) "home" -}}
+  {{- else -}}
+    {{- "" -}}
+  {{- end -}}
+{{- end }}
