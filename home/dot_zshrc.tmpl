@@ -93,7 +93,7 @@ export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
 
 # Personal API token for Homebrew (macOS + personal use only)
 {{- if and .personal (eq .chezmoi.os "darwin") (lookPath "op") }}
-export HOMEBREW_GITHUB_API_TOKEN={{ (output "op" "item" "get" "homebrew_github_api_token" "--fields" "notesPlain") }}
+export HOMEBREW_GITHUB_API_TOKEN=$(op read "op://Tokens/homebrew_github_api_token/notesPlain")
 {{- end }}
 
 # Work environment variables
