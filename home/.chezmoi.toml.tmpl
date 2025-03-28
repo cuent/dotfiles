@@ -54,25 +54,26 @@
 {{- end -}}
 
 {{- $gpuHome := "" }}
-{{- if eq .chezmoi.hostname "corgi" }}
-{{- $gpuHome = "/data/xxs22" }}
-{{- else if eq .chezmoi.hostname "bluejay" }}
-{{- $gpuHome = "/data2/users/xxs22" }}
+{{- $gpuHosts := dict
+    "corgi" (printf "/data/%s" .chezmoi.username)
+    "bluejay" (printf "/data2/users/%s" .chezmoi.username)
+}}
+{{- if and .gpu (hasKey $gpuHosts .chezmoi.hostname) }}
+{{-     $gpuHome = index $gpuHosts .chezmoi.hostname }}
 {{- end }}
 
 [data]
     email = {{ $email | quote }}
     workemail = {{ $workemail | quote }}
-    
+
     ephemeral = {{ $ephemeral }}
     headless = {{ $headless }}
-    
+
     work = {{ $work }}
     personal = {{ $personal }}
-    
+
     gpu = {{ $gpu_server }}
 
     osid = {{ $osID | quote }}
 
-[extra]
-    gpuHome = {{ $gpuHome | quote }}
+    extra = { gpuHome = {{ $gpuHome | quote }} }
