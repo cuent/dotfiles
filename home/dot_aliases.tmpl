@@ -13,8 +13,13 @@ alias fd=fdfind
 alias ls=eza
 {{- end }}
 
-{{- if and .gpu (stat .extra.gpuHome) }}
-alias wd={{ .extra.gpuHome }}
+{{- if .gpu }}
+# Aliases for GPU homes
+{{- range $host, $data := .extra.gpuHome }}
+{{-   if (stat $data.home) }}
+alias gh-{{ $host }}={{ $data.home | quote }}
+{{-   end }}
+{{- end }}
 {{- end }}
 
 # Unix

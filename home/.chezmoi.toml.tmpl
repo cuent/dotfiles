@@ -53,11 +53,6 @@
 {{-     $workemail = promptStringOnce . "workemail" "Work email address" -}}
 {{- end -}}
 
-{{- $gpuHosts := dict
-    "corgi" (printf "/data/%s" .chezmoi.username)
-    "bluejay" (printf "/data2/users/%s" .chezmoi.username)
-}}
-
 [data]
     email = {{ $email | quote }}
     workemail = {{ $workemail | quote }}
@@ -72,10 +67,11 @@
 
     osid = {{ $osID | quote }}
 
+
 {{- if .gpu }}
-    extra = { gpuHome = {
-        {{- range $host, $path := $gpuHosts }}
-        {{ $host }} = { home = {{ $path | quote }} },
-        {{- end }}
-} }
+[data.gpuExtra.corgi]
+  gpuHome = "/data/{{ .chezmoi.username }}"
+
+[data.gpuExtra.bluejay]
+  gpuHome = "/data2/users/{{ .chezmoi.username }}"
 {{- end }}

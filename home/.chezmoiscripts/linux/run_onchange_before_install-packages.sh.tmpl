@@ -3,8 +3,9 @@
 
 set -eufo pipefail
 
-FZF_DIR={{ .extra.gpuHome }}/.fzf
-FZF_ZSH={{ .extra.gpuHome }}/.fzf.zsh
+{{- with index .gpuExtra .chezmoi.hostname }}
+FZF_DIR={{ .gpuHome }}/.fzf
+FZF_ZSH={{ .gpuHome }}/.fzf.zsh
 if ! command -v fzf &> /dev/null; then
 
   if [ ! -d "$FZF_DIR" ]; then
@@ -24,14 +25,15 @@ fi
 echo "Writing fzf.zsh to $FZF_ZSH..."
 cat <<'EOF' > "$FZF_ZSH"
 # Auto-generated fzf config
-if [[ ":$PATH:" != *":{{ .extra.gpuHome }}/.fzf/bin:"* ]]; then
-  export PATH="{{ .extra.gpuHome }}/.fzf/bin:$PATH"
+if [[ ":$PATH:" != *":{{ .gpuHome }}/.fzf/bin:"* ]]; then
+  export PATH="{{ .gpuHome }}/.fzf/bin:$PATH"
 fi
 
 if command -v fzf &>/dev/null; then
-  source <("{{ .extra.gpuHome }}/.fzf/bin/fzf" --zsh)
+  source <("{{ .gpuHome }}/.fzf/bin/fzf" --zsh)
 fi
 EOF
+{{- end -}}
 {{- end -}}
 
 {{- if .ephemeral -}}
