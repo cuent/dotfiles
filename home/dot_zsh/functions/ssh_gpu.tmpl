@@ -1,4 +1,4 @@
-{{- if or (and .personal (not .gpu)) (and .personal (not .work)) }}
+{{- if and .personal (not .gpu) (not .work) }}
 
 # ssh-hpc: Login to hpc
 ssh-hpc() {
