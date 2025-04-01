@@ -25,9 +25,16 @@ Host hpc
   User xxs22
   Hostname login.hpc.ic.ac.uk
   CheckHostIP no
+  IdentitiesOnly yes
+  PreferredAuthentications password
+  PubkeyAuthentication no
 Host hpc-cx3
   User xxs22
   Hostname login.cx3.hpc.ic.ac.uk
+  CheckHostIP no
+  IdentitiesOnly yes
+  PreferredAuthentications password
+  PubkeyAuthentication no
 {{- end }}
 
 {{- if .work }}

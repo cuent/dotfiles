@@ -1,0 +1,33 @@
+{{- if or (and .personal (not .gpu)) (and .personal (not .work)) }}
+
+# ssh-hpc: Login to hpc
+ssh-hpc() {
+  _ssh_with_password hpc
+}
+
+# ssh-cx3: Login to hpc-cx3
+ssh-cx3() {
+  _ssh_with_password hpc-cx3
+}
+
+# Private helper (not exported)
+_ssh_with_password() {
+  local host="$1"
+  local pass
+  pass=$(op item get gutmwuqjtrvtugfjnimccymnyi --field password --reveal)
+
+  /usr/bin/expect <<EOF
+set timeout -1
+log_user 1
+spawn ssh "$host"
+expect {
+  -re {.*[Pp]assword:.*} {
+    send -- "$pass\r"
+    exp_continue
+  }
+  eof
+}
+EOF
+}
+
+{{- end }}
