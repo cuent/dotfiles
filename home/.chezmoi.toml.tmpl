@@ -1,11 +1,9 @@
-{{/* boolean feature tags */}}
-{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
-{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
-
-{{- $gpu_server := false -}}{{/* true if this machine is a gpu server */}}
-
-{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
-{{- $work := false -}}{{/* true if this machine is used for work purposes */}}
+{{/* Feature Flags */}}
+{{- $ephemeral := false -}}{{/* True if this machine is ephemeral (e.g., cloud or VM instance) */}}
+{{- $headless := false -}}{{/* True if this machine does not have a screen and keyboard */}}
+{{- $gpu_server := false -}}{{/* True if this machine is a GPU server */}}
+{{- $personal := false -}}{{/* True if this machine should have personal secrets */}}
+{{- $work := false -}}{{/* True if this machine is used for work purposes */}}
 {{- "" -}}
 
 {{- $osID := .chezmoi.os -}}
@@ -13,11 +11,13 @@
 {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
-{{/* work around unreliable hostname on darwin */}}
+{{/* Dynamic hostname logic */}}
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
-{{-   if or (eq $computerName "MacBook Pro de Xavier") (eq $computerName "Xavier's MacBook Pro") -}}
+{{-   if eq $computerName "MacBook Pro de Xavier" -}}
+{{-     $hostname = "cuent-mbp" -}}
+{{-   else if eq $computerName "Xavier's MacBook Pro" -}}
 {{-     $hostname = "cuent-mbp" -}}
 {{-   else if eq $computerName "Xavier Sumba" -}}
 {{-     $hostname = "cuent-work" -}}
@@ -26,6 +26,7 @@
 {{-   end -}}
 {{- end -}}
 
+{{/* Set ephemeral flag for Windows */}}
 {{- if eq .chezmoi.os "windows" -}}
 {{-   $ephemeral = true -}}
 {{- end -}}
@@ -54,19 +55,18 @@
 {{- end -}}
 
 [data]
-    email = {{ $email | quote }}
-    workemail = {{ $workemail | quote }}
+    email = {{ $email | quote }} # Primary email address
+    workemail = {{ $workemail | quote }} # Work email address (if applicable)
 
-    ephemeral = {{ $ephemeral }}
-    headless = {{ $headless }}
+    ephemeral = {{ $ephemeral }} # True if the machine is ephemeral
+    headless = {{ $headless }} # True if the machine is headless
 
-    work = {{ $work }}
-    personal = {{ $personal }}
+    work = {{ $work }} # True if the machine is used for work
+    personal = {{ $personal }} # True if the machine is personal
 
-    gpu = {{ $gpu_server }}
+    gpu = {{ $gpu_server }} # True if the machine is a GPU server
 
-    osid = {{ $osID | quote }}
-
+    osid = {{ $osID | quote }} # Operating system identifier
 
 {{- if .gpu }}
 [data.gpuExtra.corgi]

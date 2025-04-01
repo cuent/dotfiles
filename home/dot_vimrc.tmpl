@@ -8,6 +8,8 @@ set nobackup
 set nowritebackup
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
 set history=50
+
+" UI Settings
 set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
@@ -51,6 +53,7 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile gitconfig.local set filetype=gitconfig
   autocmd BufRead,BufNewFile tmux.conf.local set filetype=tmux
   autocmd BufRead,BufNewFile vimrc.local set filetype=vim
+  autocmd BufRead,BufNewFile *.ipynb set filetype=json
 augroup END
 
 " ALE linting events
@@ -66,7 +69,7 @@ augroup ale
     autocmd InsertEnter * call ale#Queue(0)
     autocmd InsertLeave * call ale#Queue(0)
   else
-    echoerr "My dotfiles require NeoVim or Vim 8"
+    echoerr "Error: NeoVim or Vim 8+ is required for these dotfiles. Please upgrade to the latest version."
   endif
 augroup END
 
@@ -86,6 +89,10 @@ set list listchars=tab:»·,trail:·,nbsp:·
 " Use one space, not two, after punctuation.
 set nojoinspaces
 
+" Search Settings
+set incsearch
+set grepprg=ag\ --nogroup\ --nocolor
+
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
   " Use Ag over Grep
@@ -100,9 +107,20 @@ if executable('ag')
   endif
 endif
 
-" Make it obvious where 80 characters is
-set textwidth=80
+" Make column width configurable
+if exists("g:custom_textwidth")
+  set textwidth=g:custom_textwidth
+else
+  set textwidth=80
+endif
 set colorcolumn=+1
+
+" Abstract spellfile path
+let g:vim_spellfile_path = $HOME . "/.vim-spell-en.utf-8.add"
+set spellfile=g:vim_spellfile_path
+
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell
 
 " Numbers
 set number
@@ -123,7 +141,8 @@ endfunction
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
 
-" Switch between the last two files
+" Add comments for custom mappings
+" Quickly switch between the last two files
 nnoremap <Leader><Leader> <C-^>
 
 " Get off my lawn
@@ -158,7 +177,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-" Move between linting errors
+" Navigate between linting errors
 nnoremap ]r :ALENextWrap<CR>
 nnoremap [r :ALEPreviousWrap<CR>
 
@@ -177,3 +196,30 @@ if &diff
   set diffopt-=internal
   set diffopt+=vertical
 endif
+
+" Python-specific settings
+autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+
+" Add support for remote file editing
+set nobackup
+set nowritebackup
+set noswapfile
+set backupskip=/tmp/*,/private/tmp/*
+
+" Enable folding for better navigation in large scripts
+set foldmethod=indent
+set foldlevel=99
+
+" Enable linting for Python with ALE
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint'],
+\}
+let g:ale_fixers = {
+\   'python': ['black', 'isort'],
+\}
+let g:ale_python_flake8_executable = 'flake8'
+let g:ale_python_black_executable = 'black'
+
+" Add key mappings for quick navigation
+nnoremap <Leader>rf :source ~/.vimrc<CR> " Reload .vimrc
+nnoremap <Leader>e :e ~/.vimrc<CR>       " Edit .vimrc
