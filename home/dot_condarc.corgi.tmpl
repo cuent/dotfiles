@@ -1,0 +1,3 @@
+{{- if .gpu }}
+{{- template "condarc_base" dict "condaBase" .gpuExtra.corgi.condaBase -}}
+{{- end }}

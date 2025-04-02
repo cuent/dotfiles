@@ -71,9 +71,9 @@
 {{- if .gpu }}
 [data.gpuExtra.corgi]
   gpuHome = "/data/{{ .chezmoi.username }}"
-  condaPath = "/data/{{ .chezmoi.username }}/miniconda3/bin/conda"
+  condaBase = "/data/{{ .chezmoi.username }}/miniconda3/bin/conda"
 
 [data.gpuExtra.bluejay]
   gpuHome = "/data2/users/{{ .chezmoi.username }}"
-  condaPath = "/data2/packages/anaconda3/bin/conda"
+  condaBase = "/data2/packages/anaconda3/bin/conda"
 {{- end }}
