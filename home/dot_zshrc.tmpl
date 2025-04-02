@@ -146,6 +146,8 @@ if [ -x "{{ $conda_root }}/bin/conda" ] && [ -z "$__conda_initialized" ]; then
 fi
 {{- end }}
 unset __conda_initialized
+
+[[ -f ~/.condarc.{{ .chezmoi.hostname }} ]] && ln -sf ~/.condarc.{{ .chezmoi.hostname }} ~/.condarc
 # <<< conda initialize <<<
 {{- end }}
 
