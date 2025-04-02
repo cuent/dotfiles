@@ -129,7 +129,7 @@ export PATH="$HOME/bin:$PATH"
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 {{- range $name, $cfg := .gpuExtra }}
-if [ -x "{{ $cfg.condaPath }}" ]; then
+if [ -x "{{ $cfg.condaPath }}" ] && (
   __conda_setup="$('{{ $cfg.condaPath }}' 'shell.bash' 'hook' 2> /dev/null)"
   if [ $? -eq 0 ]; then
       eval "$__conda_setup"
@@ -143,14 +143,14 @@ if [ -x "{{ $cfg.condaPath }}" ]; then
       unset conda_root_dir
   fi
   unset __conda_setup
-  break
-fi
+  return 0
+); then return 0; fi
 {{- end }}
 # <<< conda initialize <<<
 {{- end }}
 
 # Setup Perl path for latexindent (personal use only)
-{{- if and .personal (not .work) }}
+{{- if and .personal (and not .work not gpu) }}
 # Add local Perl modules to path for latexindent
 export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"
 {{- end }}
