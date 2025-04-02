@@ -150,7 +150,7 @@ if [ -x "{{ $cfg.condaPath }}" ] && (
 {{- end }}
 
 # Setup Perl path for latexindent (personal use only)
-{{- if and .personal (and not .work not gpu) }}
+{{- if and .personal (and not .work not .gpu) }}
 # Add local Perl modules to path for latexindent
 export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"
 {{- end }}
