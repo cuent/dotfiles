@@ -17,9 +17,7 @@ alias ls=eza
 # Aliases for GPU homes
 {{- range $host, $data := .gpuExtra }}
   {{- if (hasKey $data "gpuHome") }}
-    {{- if (stat $data.gpuHome) }}
 alias gh-{{ $host }}={{ $data.gpuHome | quote }}
-    {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}
