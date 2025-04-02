@@ -128,17 +128,24 @@ export PATH="$HOME/bin:$PATH"
 {{- if and .headless .gpu }}
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('{{ .extra.gpuHome }}/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "{{ .extra.gpuHome }}/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "{{ .extra.gpuHome }}/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="{{ .extra.gpuHome }}/miniconda3/bin:$PATH"
-    fi
+{{- range $name, $cfg := .gpuExtra }}
+if [ -x "{{ $cfg.condaPath }}" ]; then
+  __conda_setup="$('{{ $cfg.condaPath }}' 'shell.bash' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+      eval "$__conda_setup"
+  else
+      conda_root_dir="$(dirname "$(dirname "{{ $cfg.condaPath }}")")"
+      if [ -f "$conda_root_dir/etc/profile.d/conda.sh" ]; then
+          . "$conda_root_dir/etc/profile.d/conda.sh"
+      else
+          export PATH="$conda_root_dir/bin:$PATH"
+      fi
+      unset conda_root_dir
+  fi
+  unset __conda_setup
+  break
 fi
-unset __conda_setup
+{{- end }}
 # <<< conda initialize <<<
 {{- end }}
 
