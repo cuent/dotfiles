@@ -135,8 +135,8 @@ if [ -x "{{ $conda_root }}/bin/conda" ] && [ -z "$__conda_initialized" ]; then
   [[ -f ~/.condarc.{{ $name }} ]] && ln -sf ~/.condarc.{{ $name }} ~/.condarc >/dev/null 2>&1
 
   # Link host-specific pip.conf
-  [[ -f ~/.config/pip/pip.conf.{{ .chezmoi.hostname }} ]] && \
-    ln -sf ~/.config/pip/pip.conf.{{ .chezmoi.hostname }} ~/.config/pip/pip.conf >/dev/null 2>&1
+  [[ -f ~/.config/pip/pip.conf.{{ $name }} ]] && \
+    ln -sf ~/.config/pip/pip.conf.{{ $name }} ~/.config/pip/pip.conf >/dev/null 2>&1
 
   __conda_setup="$('{{ $conda_root }}/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
   if [ $? -eq 0 ]; then
