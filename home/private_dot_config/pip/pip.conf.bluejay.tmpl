@@ -1,0 +1,3 @@
+{{- if .gpu }}
+{{- template "pipconf" dict "cacheDir" (print .gpuExtra.bluejay.gpuHome "/.cache/pip/") -}}
+{{- end }}
