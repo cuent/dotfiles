@@ -131,6 +131,9 @@ export PATH="$HOME/bin:$PATH"
 {{- range $name, $cfg := .gpuExtra }}
 {{- $conda_root := $cfg.condaBase }}
 if [ -x "{{ $conda_root }}/bin/conda" ] && [ -z "$__conda_initialized" ]; then
+  # Link the correct .condarc for this machine if it exists
+  [[ -f ~/.condarc.{{ $name }} ]] && ln -sf ~/.condarc.{{ $name }} ~/.condarc
+  
   __conda_setup="$('{{ $conda_root }}/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
   if [ $? -eq 0 ]; then
       eval "$__conda_setup"
@@ -147,7 +150,6 @@ fi
 {{- end }}
 unset __conda_initialized
 
-[[ -f ~/.condarc.{{ .chezmoi.hostname }} ]] && ln -sf ~/.condarc.{{ .chezmoi.hostname }} ~/.condarc
 # <<< conda initialize <<<
 {{- end }}
 
