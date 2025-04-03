@@ -1,3 +1,7 @@
+channels:
+  - conda-forge
+  - defaults
+
 envs_dirs: []
 
 pkgs_dirs:
@@ -8,3 +12,4 @@ create_default_packages:
   - flake8
   - mypy
   - nvitop
+  - isort
