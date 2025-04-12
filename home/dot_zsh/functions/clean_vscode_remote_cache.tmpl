@@ -1,0 +1,15 @@
+{{- if .gpu }}
+clean_vscode_remote_cache() {
+  local path="${1:-$HOME/.vscode-remote-containers/bin}"
+  local days_old="${2:-14}"
+
+  if [ ! -d "$path" ]; then
+    echo "📁 Directory $path does not exist."
+    return 1
+  fi
+
+  echo "🧹 Cleaning files not accessed in the last $days_old days from: $path"
+  find "$path" -mindepth 1 -atime +$days_old -exec rm -rf {} +
+  echo "✅ Done."
+}
+{{- end }}
