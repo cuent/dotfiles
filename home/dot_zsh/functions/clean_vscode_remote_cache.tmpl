@@ -2,14 +2,21 @@
 clean_vscode_remote_cache() {
   local path="${1:-$HOME/.vscode-remote-containers/bin}"
   local days_old="${2:-14}"
+  local find_cmd="/usr/bin/find"
+  local rm_cmd="/bin/rm"
 
-  if [ ! -d "$path" ]; then
+  if [[ ! -x "$find_cmd" || ! -x "$rm_cmd" ]]; then
+    echo "❌ Required command not available: find or rm"
+    return 1
+  fi
+
+  if [[ ! -d "$path" ]]; then
     echo "📁 Directory $path does not exist."
     return 1
   fi
 
   echo "🧹 Cleaning files not accessed in the last $days_old days from: $path"
-  find "$path" -mindepth 1 -atime +$days_old -exec rm -rf {} +
+  "$find_cmd" "$path" -mindepth 1 -atime +$days_old -exec "$rm_cmd" -rf {} +
   echo "✅ Done."
 }
 {{- end }}
