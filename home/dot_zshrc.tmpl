@@ -155,6 +155,8 @@ fi
 unset __conda_initialized
 
 # <<< conda initialize <<<
+# Disable loading of ~/.local/lib/pythonX.Y/site-packages
+export PYTHONNOUSERSITE=True
 {{- end }}
 
 {{- if and .personal (not .work) (not .gpu) }}
