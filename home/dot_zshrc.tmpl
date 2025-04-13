@@ -53,6 +53,18 @@ plugins=(
   z
 )
 
+
+{{- if eq .chezmoi.os "darwin" }}
+# macOS Homebrew setup
+[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Add Homebrew completions (only on macOS, if the path exists)
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+fi
+{{- end }}
+
 source $ZSH/oh-my-zsh.sh
 
 # Load custom executable functions
@@ -83,17 +95,6 @@ export EDITOR=vim
 # Go configuration
 export GOPATH=$HOME
 export GO111MODULE=on
-
-{{- if eq .chezmoi.os "darwin" }}
-# macOS Homebrew setup
-[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-export HOMEBREW_NO_AUTO_UPDATE=1
-
-# Add Homebrew completions (only on macOS, if the path exists)
-if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
-  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-fi
-{{- end }}
 
 # Locale and environment
 export LANG=en_US.UTF-8
