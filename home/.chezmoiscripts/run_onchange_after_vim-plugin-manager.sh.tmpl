@@ -14,7 +14,7 @@ VIMRC="{{ .chezmoi.homeDir }}/.vimrc.bundles"
 
 if [ -e "$PLUG_PATH" ]; then
 log "Upgrading vim plugins using +PlugUpgrade..."
-  if ! vim -E -s +PlugUpgrade +qa; then
+  if ! vim -E -s -u "$VIMRC" +PlugUpgrade +qa; then
     log "Error: PlugUpgrade failed."
     exit 0
   fi
