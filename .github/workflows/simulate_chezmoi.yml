@@ -97,6 +97,9 @@ jobs:
         [data.gpuExtra.bluejay]
           gpuHome = "./data2/users/user"
           condaBase = "./data2/packages/anaconda3"
+        [data.gpuExtra.doc]
+          gpuHome = "./dummy/users/user"
+          condaBase = "./dummy/packages/anaconda3"
     steps:
       - uses: actions/checkout@v4
       - name: Create Chezmoi Config
@@ -233,6 +236,9 @@ jobs:
         [data.gpuExtra.bluejay]
           gpuHome = "./data2/users/user"
           condaBase = "./data2/packages/anaconda3"
+        [data.gpuExtra.doc]
+          gpuHome = "./dummy/users/user"
+          condaBase = "./dummy/packages/anaconda3"
     steps:
       - uses: actions/checkout@v4
       - name: Create Chezmoi Config
