@@ -68,7 +68,7 @@
 
     osid = {{ $osID | quote }} # Operating system identifier
 
-{{- if .gpu }}
+{{- if $gpu_server }}
 [data.gpuExtra.corgi]
   gpuHome = "/data/{{ .chezmoi.username }}"
   condaBase = "/data/{{ .chezmoi.username }}/miniconda3"
