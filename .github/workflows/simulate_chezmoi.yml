@@ -22,8 +22,8 @@ jobs:
         [data]
           email = "email@gmail.com"
           workemail = ""
-          ephemeral = true
           headless = true
+          ephemeral = true
           work = false
           personal = false
           gpu = false
@@ -44,17 +44,16 @@ jobs:
           chezmoi data
 
   simulate-work-linux:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_work != 'true'
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
         [data]
           email = "email@gmail.com"
           workemail = "email@gmail.com"
-          ephemeral = false
           headless = true
+          ephemeral = false
           work = true
-          personal = true
+          personal = false
           gpu = false
           osid = "linux"
     steps:
