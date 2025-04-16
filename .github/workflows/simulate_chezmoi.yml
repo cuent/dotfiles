@@ -113,6 +113,82 @@ jobs:
           chezmoi init --apply --guess-repo-url=false --source .
           chezmoi data
 
+  simulate-personal-linux:
+    runs-on: ubuntu-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = ""
+          headless = true
+          ephemeral = false
+          work = false
+          personal = true
+          gpu = false
+          osid = "linux"
+        [data.gpuExtra.corgi]
+          gpuHome = "./data/user"
+          condaBase = "./data/user/miniconda3"
+        [data.gpuExtra.bluejay]
+          gpuHome = "./data2/users/user"
+          condaBase = "./data2/packages/anaconda3"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install zsh
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh
+      - name: Install Chezmoi
+        run: |
+          curl -sfL https://git.io/chezmoi | sh
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+          simulate-gpu-linux:
+            runs-on: ubuntu-latest
+            env:
+              CHEZMOI_CONFIG: >
+                [data]
+                  email = "email@gmail.com"
+                  workemail = ""
+                  headless = true
+                  ephemeral = false
+                  work = false
+                  personal = false
+                  gpu = true
+                  osid = "linux"
+                [data.gpuExtra.corgi]
+                  gpuHome = "./data/user"
+                  condaBase = "./data/user/miniconda3"
+                [data.gpuExtra.bluejay]
+                  gpuHome = "./data2/users/user"
+                  condaBase = "./data2/packages/anaconda3"
+            steps:
+              - uses: actions/checkout@v4
+              - name: Create Chezmoi Config
+                run: |
+                  mkdir -p home
+                  echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+              - name: Install zsh
+                run: |
+                  sudo apt-get update
+                  sudo apt-get install -y zsh
+              - name: Install Chezmoi
+                run: |
+                  curl -sfL https://git.io/chezmoi | sh
+                  sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+              - name: Apply Dotfiles
+                run: |
+                  chezmoi init --apply --guess-repo-url=false --source .
+                  chezmoi data
+        
   simulate-default-macos:
     runs-on: macos-latest
     env:
