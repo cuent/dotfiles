@@ -208,17 +208,16 @@ jobs:
           chezmoi data
 
   simulate-gpu-macos:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_gpu != 'true'
     runs-on: macos-latest
     env:
       CHEZMOI_CONFIG: >
         [data]
           email = "email@gmail.com"
           workemail = ""
-          ephemeral = false
           headless = true
+          ephemeral = false
           work = false
-          personal = true
+          personal = false
           gpu = true
           osid = "darwin"
         [data.gpuExtra.corgi]
@@ -241,3 +240,30 @@ jobs:
         run: |
           chezmoi init --apply --guess-repo-url=false --source .
           chezmoi data
+  simulate-personal-macos:
+      runs-on: macos-latest
+      env:
+        CHEZMOI_CONFIG: >
+          [data]
+            email = "email@gmail.com"
+            workemail = ""
+            headless = true
+            ephemeral = false
+            work = false
+            personal = true
+            gpu = false
+            osid = "darwin"
+      steps:
+        - uses: actions/checkout@v4
+        - name: Create Chezmoi Config
+          run: |
+            mkdir -p home
+            echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+        - name: Install Chezmoi
+          run: |
+            /bin/bash -c "$(curl -fsSL https://git.io/chezmoi)"
+            sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+        - name: Apply Dotfiles
+          run: |
+            chezmoi init --apply --guess-repo-url=false --source .
+            chezmoi data
