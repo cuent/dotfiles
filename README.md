@@ -1,8 +1,11 @@
 # Dotfiles
 
+[![Bootstrapping CI](https://github.com/cuent/dotfiles/actions/workflows/simulate_chezmoi.yml/badge.svg)](https://github.com/cuent/dotfiles/actions/workflows/simulate_chezmoi.yml)
+
+
 Configuration managed by [chezmoi](https://www.chezmoi.io/) for consistent dotfiles across machines.
 
-## Usage
+## 🚀 Usage
 
 1. Install chezmoi:
    ```sh
