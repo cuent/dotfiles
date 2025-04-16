@@ -1,4 +1,4 @@
 {{- $keyPath := (printf "/Users/%s/.ssh/id_rsa.pub" .chezmoi.username) }}
-{{- if and .work stat $keyPath }}
-.chezmoi.workemail {{ (include $keyPath) | trim }}
+{{- if and .work (stat $keyPath) }}
+{{ .workemail }} {{ (include $keyPath) | trim }}
 {{- end }}
