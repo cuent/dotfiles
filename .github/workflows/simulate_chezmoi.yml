@@ -29,7 +29,7 @@ jobs:
           gpu = false
           osid = "linux"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
@@ -44,7 +44,7 @@ jobs:
           chezmoi data
 
   simulate-work-linux:
-    if: ${{ github.event.inputs.skip_work != 'true' }}
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_work != 'true'
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
@@ -58,7 +58,7 @@ jobs:
           gpu = false
           osid = "linux"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
@@ -93,7 +93,7 @@ jobs:
           gpuHome = "./data2/users/user"
           condaBase = "./data2/packages/anaconda3"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
@@ -121,7 +121,7 @@ jobs:
           gpu = false
           osid = "darwin"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
@@ -136,7 +136,7 @@ jobs:
           chezmoi data
 
   simulate-work-macos:
-    if: ${{ github.event.inputs.skip_work != 'true' }}
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_work != 'true'
     runs-on: macos-latest
     env:
       CHEZMOI_CONFIG: >
@@ -150,7 +150,7 @@ jobs:
           gpu = false
           osid = "darwin"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
@@ -165,7 +165,7 @@ jobs:
           chezmoi data
 
   simulate-gpu-macos:
-    if: ${{ github.event.inputs.skip_gpu != 'true' }}
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_gpu != 'true'
     runs-on: macos-latest
     env:
       CHEZMOI_CONFIG: >
@@ -185,7 +185,7 @@ jobs:
           gpuHome = "./data2/users/user"
           condaBase = "./data2/packages/anaconda3"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create Chezmoi Config
         run: |
           mkdir -p home
