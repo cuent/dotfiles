@@ -15,7 +15,7 @@ on:
         default: "true"
 
 jobs:
-  simulate-default-linux:
+  simulate-ephemeral-linux:
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
@@ -76,17 +76,16 @@ jobs:
           chezmoi data
 
   simulate-gpu-linux:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_gpu != 'true'
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
         [data]
           email = "email@gmail.com"
           workemail = ""
-          ephemeral = false
           headless = true
+          ephemeral = false
           work = false
-          personal = true
+          personal = false
           gpu = true
           osid = "linux"
         [data.gpuExtra.corgi]
