@@ -30,9 +30,9 @@
 {{-   $ephemeral = true -}}
 {{- end -}}
 
+{{/* Configuration for different machines */}}
 {{- if not $ephemeral -}}
-{{-   if and (eq .chezmoi.hostname "corgi" "bluejay") (eq .chezmoi.username "xxs22") -}}
-{{/*    fixed user for GPUs */}}
+{{-   if and (eq .chezmoi.username "xxs22") -}}
 {{-     $headless = true -}}
 {{-     $gpu_server = true -}}
 {{-   else if eq $hostname "cuent-mbp" -}}
@@ -66,16 +66,6 @@
 
   osid = {{ $osID | quote }}           # Operating system identifier (e.g., "linux-ubuntu" or "darwin")
 
-{{- $trueCount := 0 -}}
-{{- if $ephemeral }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
-{{- if $work }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
-{{- if $personal }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
-{{- if $gpu_server }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
-
-{{- if ne $trueCount 1 }}
-{{ fail (printf "Exactly one of 'ephemeral', 'work', 'personal', or 'gpu' must be true. Found %d true values." $trueCount) }}
-{{- end }}
-
 {{- if $gpu_server }}
 [data.gpuExtra.corgi]
   gpuHome = "/data/{{ .chezmoi.username }}"
@@ -84,4 +74,19 @@
 [data.gpuExtra.bluejay]
   gpuHome = "/data2/users/{{ .chezmoi.username }}"
   condaBase = "/data2/packages/anaconda3"
+
+[data.gpuExtra.doc]
+  gpuHome = "/vol/bitbucket/{{ .chezmoi.username }}"
+  condaBase = "/vol/bitbucket/{{ .chezmoi.username }}/packages/anaconda3"
+
+{{- end }}
+
+{{/* Validate only one machine type is selected */}}
+{{- $trueCount := 0 -}}
+{{- if $ephemeral }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $work }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $personal }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $gpu_server }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if ne $trueCount 1 }}
+{{ fail (printf "Exactly one of 'ephemeral', 'work', 'personal', or 'gpu' must be true. Found %d true values." $trueCount) }}
 {{- end }}
