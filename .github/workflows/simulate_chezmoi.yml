@@ -1,0 +1,200 @@
+name: Simulate Chezmoi Environments
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      skip_gpu:
+        description: "Skip GPU jobs?"
+        required: false
+        default: "true"
+      skip_work:
+        description: "Skip Work jobs?"
+        required: false
+        default: "true"
+
+jobs:
+  simulate-default-linux:
+    runs-on: ubuntu-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = ""
+          ephemeral = true
+          headless = true
+          work = false
+          personal = false
+          gpu = false
+          osid = "linux"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          curl -sfL https://git.io/chezmoi | sh
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+  simulate-work-linux:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_work != 'true'
+    runs-on: ubuntu-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = "email@gmail.com"
+          ephemeral = false
+          headless = true
+          work = true
+          personal = true
+          gpu = false
+          osid = "linux"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          curl -sfL https://git.io/chezmoi | sh
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+  simulate-gpu-linux:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_gpu != 'true'
+    runs-on: ubuntu-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = ""
+          ephemeral = false
+          headless = true
+          work = false
+          personal = true
+          gpu = true
+          osid = "linux"
+        [data.gpuExtra.corgi]
+          gpuHome = "./data/user"
+          condaBase = "./data/user/miniconda3"
+        [data.gpuExtra.bluejay]
+          gpuHome = "./data2/users/user"
+          condaBase = "./data2/packages/anaconda3"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          curl -sfL https://git.io/chezmoi | sh
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+  simulate-default-macos:
+    runs-on: macos-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = ""
+          ephemeral = true
+          headless = true
+          work = false
+          personal = false
+          gpu = false
+          osid = "darwin"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          /bin/bash -c "$(curl -fsSL https://git.io/chezmoi)"
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+  simulate-work-macos:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_work != 'true'
+    runs-on: macos-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = "email@gmail.com"
+          ephemeral = false
+          headless = true
+          work = true
+          personal = true
+          gpu = false
+          osid = "darwin"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          /bin/bash -c "$(curl -fsSL https://git.io/chezmoi)"
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
+
+  simulate-gpu-macos:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_gpu != 'true'
+    runs-on: macos-latest
+    env:
+      CHEZMOI_CONFIG: >
+        [data]
+          email = "email@gmail.com"
+          workemail = ""
+          ephemeral = false
+          headless = true
+          work = false
+          personal = true
+          gpu = true
+          osid = "darwin"
+        [data.gpuExtra.corgi]
+          gpuHome = "./data/user"
+          condaBase = "./data/user/miniconda3"
+        [data.gpuExtra.bluejay]
+          gpuHome = "./data2/users/user"
+          condaBase = "./data2/packages/anaconda3"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Chezmoi Config
+        run: |
+          mkdir -p home
+          echo "$CHEZMOI_CONFIG" > ./home/.chezmoi.toml.tmpl
+      - name: Install Chezmoi
+        run: |
+          /bin/bash -c "$(curl -fsSL https://git.io/chezmoi)"
+          sudo mv ./bin/chezmoi /usr/local/bin/chezmoi
+      - name: Apply Dotfiles
+        run: |
+          chezmoi init --apply --guess-repo-url=false --source .
+          chezmoi data
