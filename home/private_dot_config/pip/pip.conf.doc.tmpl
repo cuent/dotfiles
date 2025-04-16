@@ -1,0 +1,3 @@
+{{- if .gpu }}
+{{- template "pipconf" dict "cacheDir" (print .gpuExtra.doc.gpuHome "/.cache/pip/") -}}
+{{- end }}
