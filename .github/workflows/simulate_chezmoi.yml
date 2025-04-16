@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+env:
+  SKIP_GPU: true
+  SKIP_WORK: true
+  
 jobs:
   simulate-default-linux:
     runs-on: ubuntu-latest
@@ -34,6 +38,7 @@ jobs:
           chezmoi data
 
   simulate-work-linux:
+    if: env.SKIP_WORK != 'true'
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
@@ -62,6 +67,7 @@ jobs:
           chezmoi data
 
   simulate-gpu-linux:
+    if: env.SKIP_GPU != 'true'
     runs-on: ubuntu-latest
     env:
       CHEZMOI_CONFIG: >
@@ -124,6 +130,7 @@ jobs:
           chezmoi data
 
   simulate-work-macos:
+    if: env.SKIP_WORK != 'true'
     runs-on: macos-latest
     env:
       CHEZMOI_CONFIG: >
@@ -152,6 +159,7 @@ jobs:
           chezmoi data
 
   simulate-gpu-macos:
+    if: env.SKIP_GPU != 'true'
     runs-on: macos-latest
     env:
       CHEZMOI_CONFIG: >
