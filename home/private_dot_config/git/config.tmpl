@@ -1,11 +1,17 @@
-[user]
-	name = Xavier Sumba
-	email = {{ .email }}
+{{- $signingkey := "" -}}
 {{- if .personal }}
-	signingkey = {{ output "op" "item" "get" "ssh_mac" "--fields" "public key" }}
+  {{- $signingkey = output "op" "item" "get" "ssh_mac" "--fields" "public key" | trim -}}
 {{- else if .work }}
-	signingkey = ~/.ssh/id_rsa
+  {{- $signingkey = "~/.ssh/id_rsa" -}}
 {{- end }}
+[user]
+  name = Xavier Sumba
+  email = {{ .email }}
+{{- if $signingkey }}
+  signingkey = {{ $signingkey }}
+{{- end }}
+
+
 [diff]
 	algorithm = histogram
 	renamelimit = 8192
