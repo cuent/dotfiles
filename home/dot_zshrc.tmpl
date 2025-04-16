@@ -169,7 +169,7 @@ unset __conda_initialized
 export PYTHONNOUSERSITE=True
 {{- end }}
 
-{{- if and .personal (not .work) (not .gpu) }}
+{{- if and .personal }}
 # Setup Perl path for latexindent (personal use only)
 # Add local Perl modules to path for latexindent
 export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"

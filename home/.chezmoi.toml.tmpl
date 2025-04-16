@@ -1,6 +1,6 @@
 {{/* Feature Flags */}}
-{{- $ephemeral := false -}}{{/* True if this machine is ephemeral (e.g., cloud or VM instance) */}}
 {{- $headless := false -}}{{/* True if this machine does not have a screen and keyboard */}}
+{{- $ephemeral := false -}}{{/* True if this machine is ephemeral (e.g., cloud or VM instance) */}}
 {{- $gpu_server := false -}}{{/* True if this machine is a GPU server */}}
 {{- $personal := false -}}{{/* True if this machine should have personal secrets */}}
 {{- $work := false -}}{{/* True if this machine is used for work purposes */}}
@@ -15,9 +15,7 @@
 {{- $hostname := .chezmoi.hostname -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
-{{-   if eq $computerName "MacBook Pro de Xavier" -}}
-{{-     $hostname = "cuent-mbp" -}}
-{{-   else if eq $computerName "Xavier's MacBook Pro" -}}
+{{-   if eq $computerName "Xavier's MacBook Pro" -}}
 {{-     $hostname = "cuent-mbp" -}}
 {{-   else if eq $computerName "Xavier Sumba" -}}
 {{-     $hostname = "cuent-work" -}}
@@ -34,13 +32,11 @@
 {{- if not $ephemeral -}}
 {{-   if and (eq .chezmoi.hostname "corgi" "bluejay") (eq .chezmoi.username "xxs22") -}}
 {{/*    fixed user for GPUs */}}
-{{-     $personal = true -}}
 {{-     $headless = true -}}
 {{-     $gpu_server = true -}}
 {{-   else if eq $hostname "cuent-mbp" -}}
 {{-     $personal = true -}}
 {{-   else if eq $hostname "cuent-work" -}}
-{{-     $personal = true -}}
 {{-     $work = true -}}
 {{-   else -}}
 {{-     $ephemeral = true -}}
@@ -58,15 +54,24 @@
     email = {{ $email | quote }} # Primary email address
     workemail = {{ $workemail | quote }} # Work email address (if applicable)
 
-    ephemeral = {{ $ephemeral }} # True if the machine is ephemeral
     headless = {{ $headless }} # True if the machine is headless
 
+    ephemeral = {{ $ephemeral }} # True if the machine is ephemeral
     work = {{ $work }} # True if the machine is used for work
     personal = {{ $personal }} # True if the machine is personal
-
     gpu = {{ $gpu_server }} # True if the machine is a GPU server
 
     osid = {{ $osID | quote }} # Operating system identifier
+
+{{- $trueCount := 0 -}}
+{{- if $ephemeral }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $work }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $personal }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+{{- if $gpu_server }}{{ $trueCount = add $trueCount 1 }}{{- end -}}
+
+{{- if ne $trueCount 1 }}
+{{ fail (printf "Exactly one of 'ephemeral', 'work', 'personal', or 'gpu' must be true. Found %d true values." $trueCount) }}
+{{- end }}
 
 {{- if $gpu_server }}
 [data.gpuExtra.corgi]

@@ -25,10 +25,6 @@
 .zshrc
 {{ end }}
 
-{{ if not .personal }}
-.pypirc
-{{ end }}
-
 {{ if not (or .personal .work) }}
 */code/*
 {{ end }}

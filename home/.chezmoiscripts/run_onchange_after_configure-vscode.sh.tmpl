@@ -27,7 +27,7 @@
     "Tyriar.sort-lines"
     "yzhang.markdown-all-in-one" -}}
 
-{{ if and .personal (not .work) -}}
+{{ if and .personal -}}
 {{   $extensions = concat $extensions (list
     "openai.chatgpt"
     "ms-toolsai.tensorboard"

@@ -1,7 +1,7 @@
 [user]
 	name = Xavier Sumba
 	email = {{ .email }}
-{{- if and .personal (not (or .work .gpu)) }}
+{{- if .personal }}
 	signingkey = {{ output "op" "item" "get" "ssh_mac" "--fields" "public key" }}
 {{- else if .work }}
 	signingkey = ~/.ssh/id_rsa
@@ -20,7 +20,7 @@
 	path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
 {{- end }}
 
-{{- if and .personal (not .work) }}
+{{- if and .personal }}
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/git.overleaf.com/"]
     path = {{ .chezmoi.homeDir }}/Documents/code/git.overleaf.com/.gitconfig
 {{- end }}
@@ -45,7 +45,7 @@
 
 [commit]
 	template = ~/.config/git/message
-{{- if or .work (and .personal (not .gpu)) }}
+{{- if or .work .personal }}
 	gpgsign = true
 {{- end }}
 
@@ -62,16 +62,16 @@
 	st = status
 	l = log --pretty=colored
 
-{{- if or .work (and .personal (not .gpu)) }}
+{{- if or .work .personal }}
 [gpg]
 	format = ssh
 
 [gpg "ssh"]
-{{- if and .personal  (not (or .work .gpu)) }}
+{{-   if and .personal }}
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-{{- else if .work }}
+{{-   else if .work }}
 	program = ssh-keygen
-{{- end }}
+{{-   end }}
 {{- end }}
 
 {{/* vim: set filetype=gitconfig: */}}

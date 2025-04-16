@@ -1,4 +1,4 @@
-{{- if and .personal (not .work) }}
+{{- if .personal }}
 #!/bin/sh
 printf "username=git\npassword=$(op read "op://Tokens/Overleaf Git Token/credential")\n"
 {{- end }}

@@ -22,7 +22,7 @@ set -eufo pipefail
      "visual-studio-code" -}}
 
 
-{{ if and .personal (not .work) -}}
+{{ if and .personal -}}
 {{   $brews = concat $brews (list 
      "direnv"
 ) -}}
