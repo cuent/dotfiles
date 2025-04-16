@@ -1,9 +1,10 @@
-{{/* Feature Flags */}}
-{{- $headless := false -}}{{/* True if this machine does not have a screen and keyboard */}}
-{{- $ephemeral := false -}}{{/* True if this machine is ephemeral (e.g., cloud or VM instance) */}}
-{{- $gpu_server := false -}}{{/* True if this machine is a GPU server */}}
-{{- $personal := false -}}{{/* True if this machine should have personal secrets */}}
-{{- $work := false -}}{{/* True if this machine is used for work purposes */}}
+{{/* Feature Flags - Used to define properties of the current machine context */}}
+{{- $headless := false -}}     {{/* True if this machine does not have a screen and keyboard (e.g., headless server or CI runner) */}}
+{{- $useop := false -}}        {{/* True if the 1Password CLI ("op") should be used for secrets management */}}
+{{- $ephemeral := false -}}    {{/* True if this machine is ephemeral (e.g., Docker container or cloud instance) */}}
+{{- $gpu_server := false -}}   {{/* True if this machine is a GPU server, used for compute-intensive tasks */}}
+{{- $personal := false -}}     {{/* True if this machine is for personal use (e.g., laptop, home desktop) */}}
+{{- $work := false -}}         {{/* True if this machine is used for work-related tasks */}}
 {{- "" -}}
 
 {{- $osID := .chezmoi.os -}}
@@ -36,6 +37,7 @@
 {{-     $gpu_server = true -}}
 {{-   else if eq $hostname "cuent-mbp" -}}
 {{-     $personal = true -}}
+{{-     $useop = true -}}
 {{-   else if eq $hostname "cuent-work" -}}
 {{-     $work = true -}}
 {{-   else -}}
@@ -51,17 +53,18 @@
 {{- end -}}
 
 [data]
-    email = {{ $email | quote }} # Primary email address
-    workemail = {{ $workemail | quote }} # Work email address (if applicable)
+  email = {{ $email | quote }}         # Primary email address
+  workemail = {{ $workemail | quote }} # Work email address (if applicable)
 
-    headless = {{ $headless }} # True if the machine is headless
+  headless = {{ $headless }}           # True if the machine is headless
+  useop = {{ $useop }}                 # True if 1Password CLI ("op") should be used for secrets
 
-    ephemeral = {{ $ephemeral }} # True if the machine is ephemeral
-    work = {{ $work }} # True if the machine is used for work
-    personal = {{ $personal }} # True if the machine is personal
-    gpu = {{ $gpu_server }} # True if the machine is a GPU server
+  ephemeral = {{ $ephemeral }}         # True if the machine is ephemeral
+  work = {{ $work }}                   # True if the machine is used for work
+  personal = {{ $personal }}           # True if the machine is personal
+  gpu = {{ $gpu_server }}              # True if the machine is a GPU server
 
-    osid = {{ $osID | quote }} # Operating system identifier
+  osid = {{ $osID | quote }}           # Operating system identifier (e.g., "linux-ubuntu" or "darwin")
 
 {{- $trueCount := 0 -}}
 {{- if $ephemeral }}{{ $trueCount = add $trueCount 1 }}{{- end -}}

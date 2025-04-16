@@ -101,7 +101,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export RIPGREP_CONFIG_PATH=~/.config/ripgrep/config
 
-{{- if and .personal (eq .chezmoi.os "darwin") (lookPath "op") }}
+{{- if and .personal .useop (eq .chezmoi.os "darwin") (lookPath "op") }}
 # Personal API token for Homebrew (macOS + personal use only)
 export HOMEBREW_GITHUB_API_TOKEN={{ (output "op" "item" "get" "homebrew_github_api_token" "--fields" "notesPlain") }}
 {{- end }}

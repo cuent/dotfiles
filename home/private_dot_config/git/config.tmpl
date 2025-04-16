@@ -1,5 +1,5 @@
 {{- $signingkey := "" -}}
-{{- if and .personal (eq .chezmoi.hostname "Xaviers-Mac-Book-Pro") }}
+{{- if and .personal .useop }}
   {{- $signingkey = output "op" "item" "get" "ssh_mac" "--fields" "public key" | trim -}}
 {{- else if .work }}
   {{- $signingkey = "~/.ssh/id_rsa" -}}
