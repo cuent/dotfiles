@@ -11,7 +11,6 @@
   signingkey = {{ $signingkey }}
 {{- end }}
 
-
 [diff]
 	algorithm = histogram
 	renamelimit = 8192
@@ -21,9 +20,12 @@
 [color]
 	ui = auto
 
-{{- if .work }}
+{{ if .work -}}
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/"]
 	path = {{ .chezmoi.homeDir }}/Documents/code/github.hootops.com/xavier.sumba/.gitconfig
+
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/code/gitlab.com/xavier.sumba/"]
+	path = {{ .chezmoi.homeDir }}/Documents/code/gitlab.com/xavier.sumba/.gitconfig
 {{- end }}
 
 {{- if and .personal }}
@@ -68,7 +70,7 @@
 	st = status
 	l = log --pretty=colored
 
-{{- if or .work .personal }}
+{{ if or .work .personal -}}
 [gpg]
 	format = ssh
 
