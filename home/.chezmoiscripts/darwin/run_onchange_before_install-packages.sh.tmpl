@@ -36,6 +36,17 @@ set -eufo pipefail
        "notion") -}}
 {{ end -}}
 
+{{ if and .work -}}
+{{   $brews = concat $brews (list 
+     "nvm"
+     "awscli"
+) -}}
+{{   $casks = concat $casks (list
+       "postman"
+       "aws-vault"
+) -}}
+{{ end -}}
+
 brew bundle --file=/dev/stdin <<EOF
 {{ range ($brews | sortAlpha | uniq) -}}
 brew "{{ . }}"
