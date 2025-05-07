@@ -36,10 +36,11 @@ set -eufo pipefail
        "notion") -}}
 {{ end -}}
 
-{{ if and .work -}}
+{{ if .work -}}
 {{   $brews = concat $brews (list 
      "nvm"
      "awscli"
+     "pyenv"
 ) -}}
 {{   $casks = concat $casks (list
        "postman"
