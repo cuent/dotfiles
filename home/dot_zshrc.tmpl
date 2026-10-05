@@ -65,7 +65,10 @@ if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
 fi
 {{- end }}
 
+# Register custom completions before Oh My Zsh runs compinit.
+[[ -d "$HOME/.zfunc" ]] && fpath=("$HOME/.zfunc" $fpath)
 source $ZSH/oh-my-zsh.sh
+zstyle ':completion:*' menu select
 
 # Load custom executable functions
 for function in $HOME/.zsh/functions/*; do
@@ -195,6 +198,12 @@ dedup_path() {
   export PATH="${result%:}"
 }
 
+# User-installed npm commands.
+export PATH="$HOME/.npm-global/bin:$PATH"
+{{ if .gpu -}}
+# Host-specific Codex installation and state directory.
+[ -r "$HOME/.config/shell/codex.sh" ] && . "$HOME/.config/shell/codex.sh"
+{{ end }}
 # Run deduplication after all PATH edits
 dedup_path
 

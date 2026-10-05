@@ -1,0 +1,7 @@
+#compdef torchrun
+
+_torchrun_completion() {
+  eval $(env _TYPER_COMPLETE_ARGS="${words[1,$CURRENT]}" _TORCHRUN_COMPLETE=complete_zsh torchrun)
+}
+
+compdef _torchrun_completion torchrun

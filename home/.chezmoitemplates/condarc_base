@@ -2,10 +2,22 @@ channels:
   - conda-forge
   - defaults
 
+{{ if hasKey . "envsDirs" -}}
+envs_dirs:
+{{- range .envsDirs }}
+  - {{ . }}
+{{- end }}
+{{ else -}}
 envs_dirs: []
-
+{{ end }}
 pkgs_dirs:
+{{- if hasKey . "pkgsDirs" }}
+{{- range .pkgsDirs }}
+  - {{ . }}
+{{- end }}
+{{- else }}
   - {{ .condaBase }}/pkgs
+{{- end }}
 
 create_default_packages:
   - black

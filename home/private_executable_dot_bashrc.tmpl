@@ -1,0 +1,20 @@
+{{ if .gpu -}}
+# Keep Codex available to interactive and non-interactive Bash shells.
+[ -r "$HOME/.config/shell/codex.sh" ] && . "$HOME/.config/shell/codex.sh"
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# Use NSS shared database for Thunderbird and Firefox
+export NSS_DEFAULT_DB_TYPE="sql"
+
+# set your default printer
+export PRINTER="ICTMono"
+
+#put your aliases here,
+alias pd="pushd"
+alias rm="rm -i"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export PATH="$HOME/bin:$HOME/.npm-global/bin:$PATH"
+{{ end -}}

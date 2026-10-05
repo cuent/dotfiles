@@ -1,0 +1,23 @@
+{{ if .gpu -}}
+# Resolve at shell startup because these machines can share a home directory.
+case "$(hostname -s)" in
+  corgi|bluejay)
+    codex_root="/data2/{{ .chezmoi.username }}"
+    ;;
+  doc2|doc3|gpucluster2|gpucluster3)
+    codex_root="/data/{{ .chezmoi.username }}"
+    ;;
+  *)
+    codex_root=""
+    ;;
+esac
+
+if [ -n "$codex_root" ]; then
+  export CODEX_HOME="$codex_root/.codex"
+  case ":$PATH:" in
+    *":$codex_root/bin:"*) ;;
+    *) export PATH="$codex_root/bin:$PATH" ;;
+  esac
+fi
+unset codex_root
+{{ end -}}

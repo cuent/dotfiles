@@ -1,3 +1,3 @@
 {{- if .gpu }}
-{{- template "condarc_base" dict "condaBase" .gpuExtra.bluejay.condaBase -}}
+{{- template "condarc_base" dict "condaBase" .gpuExtra.bluejay.condaBase "envsDirs" (list (printf "/data2/%s/conda/envs" .chezmoi.username)) "pkgsDirs" (list (printf "/data2/%s/conda/pkgs" .chezmoi.username) (printf "%s/.conda/pkgs" .gpuExtra.bluejay.gpuHome) (printf "%s/pkgs" .gpuExtra.bluejay.condaBase)) -}}
 {{- end }}
